@@ -38,4 +38,68 @@ public class OwnerTests {
 		assertTrue(s.contains("Doe"));
 	}
 
+	@Test
+	void owner_setAndGetAddress() {
+		Owner owner = new Owner();
+		owner.setAddress("456 Elm St");
+		assertEquals("456 Elm St", owner.getAddress());
+	}
+
+	@Test
+	void owner_setAndGetCity() {
+		Owner owner = new Owner();
+		owner.setCity("Chicago");
+		assertEquals("Chicago", owner.getCity());
+	}
+
+	@Test
+	void owner_setAndGetTelephone() {
+		Owner owner = new Owner();
+		owner.setTelephone("9876543210");
+		assertEquals("9876543210", owner.getTelephone());
+	}
+
+	@Test
+	void pet_setAndGetType() {
+		Pet pet = new Pet();
+		PetType type = new PetType();
+		type.setName("dog");
+		pet.setType(type);
+		assertEquals("dog", pet.getType().getName());
+	}
+
+	@Test
+	void pet_addVisit() {
+		Pet pet = new Pet();
+		Visit visit = new Visit();
+		visit.setDescription("Checkup");
+		visit.setDate(LocalDate.now());
+		pet.addVisit(visit);
+		assertTrue(pet.getVisits().contains(visit));
+	}
+
+	@Test
+	void petValidator_rejectsBlankName() {
+		PetValidator validator = new PetValidator();
+		Pet pet = new Pet();
+		pet.setName("");
+		org.springframework.validation.BeanPropertyBindingResult errors = new org.springframework.validation.BeanPropertyBindingResult(
+				pet, "pet");
+		validator.validate(pet, errors);
+		assertTrue(errors.hasErrors());
+	}
+
+	@Test
+	void petValidator_rejectsNullType() {
+		PetValidator validator = new PetValidator();
+		Pet pet = new Pet();
+		pet.setName("Fluffy");
+		pet.setType(null);
+		pet.setId(null);
+		org.springframework.validation.BeanPropertyBindingResult errors = new org.springframework.validation.BeanPropertyBindingResult(
+				pet, "pet");
+		validator.validate(pet, errors);
+		assertTrue(errors.hasErrors());
+	}
+
 }
